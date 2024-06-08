@@ -26,10 +26,27 @@ $as \rightarrow  am$
                    
 $cs \rightarrow cn, cb$
                    
-$as \rightarrow am$
-
 MVDs: 
 
-$n, s, b \twoheadrightarrow cn, cs, cb$
+$s \twoheadrightarrow cn, cs, cb$
 
-$n, s, b \twoheadrightarrow as, am$
+$s \twoheadrightarrow as, am$
+
+b)
+
+For the relation $R(n, s, b, cn, cs, cb, as, am)$, I have that the
+MVD $s  \twoheadrightarrow cn, cs, cb$ is not a superkey (the same parent
+may have multiple children or cars). I can then split up R into 
+$R2(n, s, b, cn, cs, cb)$ and $R3(n, s, b, as, am)$.
+
+For $R2$, the following FDs and MVDs hold:
+
+$s \twoheadrightarrow cn, cs, cb$
+
+$cs \twoheadrightarrow n, s, b$
+
+$s \rightarrow n, b$
+
+$cs \rightarrow cn, cb$
+
+
