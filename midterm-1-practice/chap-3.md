@@ -50,3 +50,19 @@ $s \rightarrow n, b$
 $cs \rightarrow cn, cb$
 
 
+What do I do now? Neither of the MVDs for R2 are a superkey, but following
+the decomposition procedure would not yield a relation with distinct 
+attributes. Is there an MVD I am forgetting to add?
+
+### Exercise 3.6.3
+
+a) $R(A, B, C, D)$ with MVD’s $A \rightarrow B and A \twoheadrightarrow C$
+
+The $MVD$ violations are that $A$ is not a superkey for $R$. Decomposing $R$,
+I obtain $R2(A, B)$ and $R3(A, C, D)$.
+
+$R3$ has an $MVD$ violation since $A$ does not serve as a superkey. 
+Decomposing $R3$, I obtain $R4(A, C)$ and $R5(A, D)$
+
+Decomposing $R$, I have $R2(A, B), R4(A, C)$, and $R5(A, D)$.
+
