@@ -73,3 +73,19 @@ obtain $R2(B, C, D)$ and $R3(A, B)$
 
 c) R(A, B , C, D ) with MVD $AB \twoheadrightarrow C$ and $FD B \rightarrow D$.
 
+There is an $MVD$ violation since $B$ is not a superkey. Decomposing 
+$R$, we obtain $R2(B, D)$ and $R3(A, B, C)$
+
+d) $R(A, B, C, D, E)$ with MVD’s $A \twoheadrightarrow B$
+and $AB \twoheadrightarrow C$ and FD’s $A \rightarrow D$
+and $AB \rightarrow E$.
+
+
+There is a $MVD$ violation since $\{A, B\}$ is not a superkey. Decomposing 
+$R$, we obtain $R2(A, B, C)$ and $R3(A, B, D, E)$.
+
+$R3$ has an $MVD$ violation since $A$ is not a superkey ($A \rightarrow D$). Decomposing 
+$R3$, I obtain $R4(A, D)$ and $R5(A, B, E)$
+
+Ask the TA if I would have to break up the relations further in order for 
+the $MVD$ $A \twoheadrightarrow B$ to be a key.
