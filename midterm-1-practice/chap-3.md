@@ -18,7 +18,9 @@ as = serial number of automobile n owns
 am = make of the automobile with serial number as
 
 a) 
-FDs: $s \rightarrow n, b$, 
+FDs: 
+
+$s \rightarrow n, b$, 
 
 $as \rightarrow  am$, 
 
@@ -26,6 +28,8 @@ $cs \rightarrow cn, cb$,
 
 $as \rightarrow am$
 
-MVDs: $n, s, b \twoheadrightarrow cn, cs, cb$
+MVDs: 
+
+$n, s, b \twoheadrightarrow cn, cs, cb$
 
 $n, s, b \twoheadrightarrow as, am$
