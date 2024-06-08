@@ -56,7 +56,7 @@ attributes. Is there an MVD I am forgetting to add?
 
 ### Exercise 3.6.3
 
-a) $R(A, B, C, D)$ with MVD’s $A \rightarrow B and A \twoheadrightarrow C$
+a) $R(A, B, C, D)$ with MVD’s $A \twoheadrightarrow B$ and $A \twoheadrightarrow C$
 
 The $MVD$ violations are that $A$ is not a superkey for $R$. Decomposing $R$,
 I obtain $R2(A, B)$ and $R3(A, C, D)$.
@@ -65,4 +65,11 @@ $R3$ has an $MVD$ violation since $A$ does not serve as a superkey.
 Decomposing $R3$, I obtain $R4(A, C)$ and $R5(A, D)$
 
 Decomposing $R$, I have $R2(A, B), R4(A, C)$, and $R5(A, D)$.
+
+b) $R(A, B , C, D)$ with MVD’s $A \twoheadrightarrow B$ and $B \twoheadrightarrow CD$
+
+The $MVD$ violation is that $B$ is not a superkey. Decomposing $R$, I 
+obtain $R2(B, C, D)$ and $R3(A, B)$
+
+c) R(A, B , C, D ) with MVD $AB \twoheadrightarrow C$ and $FD B \rightarrow D$.
 
