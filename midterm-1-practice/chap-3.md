@@ -20,12 +20,12 @@ am = make of the automobile with serial number as
 a) 
 FDs: 
 
-$s \rightarrow n, b$, 
-
-$as \rightarrow  am$, 
-
-$cs \rightarrow cn, cb$,
-
+$s \rightarrow n, b$ 
+                   
+$as \rightarrow  am$ 
+                   
+$cs \rightarrow cn, cb$
+                   
 $as \rightarrow am$
 
 MVDs: 
