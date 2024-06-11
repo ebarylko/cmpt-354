@@ -153,10 +153,10 @@ Splitting: if $X \rightarrow YZ$, then $X \rightarrow Y$, $X \rightarrow Z$
 Combining: if $X \rightarrow Y$ and $X \rightarrow Z$, then $X \rightarrow YZ$
 
 
-Lossly decomposition: For relations T, R, and S, $S \bowtie T \subset R$.
+Lossly decomposition: For relations T, R, and S, $R \subset S \bowtie T$.
 
 A lossless decomposition is one where joining the separated tables returns you the 
-original tables.
+original table.
 
 R is in BCNF if for any nontrivial FD $X \rightarrow Y$ in R, X is a superkey.
 
@@ -166,9 +166,24 @@ MVDs:
 
 Every FD is an MVD.
 
+$X \twoheadrightarrow Y$ means that if two instances agree in the X values, we can 
+swap the Y values and obtain tuples which are also in R.
+
+Trivial MVD is one where $LHS \cup RHS$ contains all the attributes of R or $RHS \subseteq LHS$.
+
 If $X \twoheadrightarrow Y$, then $X \twoheadrightarrow R - Y - X$.
 
+Augmentation: If $X \twoheadrightarrow Y$ and $V \subseteq W$, then $XW \twoheadrightarrow VY$.
 
+Transitivity: If $X \twoheadrightarrow Y$ and $Y \twoheadrightarrow Z$, then $X \twoheadrightarrow Z - Y$
+
+Coalescence: if $X \twoheadrightarrow Y$ and $Z \subseteq Y$ and $\exists$ W disjoint from Y such that $W \rightarrow Z$,
+then $X \rightarrow Z$.
+
+3NF: 
+
+R with FDs F are in 3NF when for all $X \rightarrow Y$, $Y \in X$ (trivial FD) or X is a superkey of R or Y
+is part of some candidate key for R.
 
 4NF:
 
@@ -176,9 +191,30 @@ For every nontrivial MVD $X \twoheadrightarrow Y$, X is a superkey.
 
 Decomposing 4NF violations:
 1. Find a nontrivial MVD $X \twoheadrightarrow Y$ where X is not a superkey
-2. Decompose R into R2 and R3, where R2 has X and Y, and R3 and X and R - X - Y.
+2. Decompose R into R2 and R3, where R2 has X and Y, and R3 has X and R - X - Y.
 3. Repeat steps 1 and 2 on the new relations until everything is in 4NF
 
+
+
+
+SQL:
+
+Any comparison done with NULL will return NULL. This will affect filtering since 
+the values being kept are those which return true for the predicate, and NULL 
+is neither true nor false.
+
+Set operations:
+INTERSECT, UNION, EXCEPT
+
+Bag operations: 
+
+INTERSECT ALL - takes the minimum of an occurence of a value v in both R and S. $\{1, 2, 1, 3\} \cap \{1, 2\} = \{1, 2\}$
+
+
+UNION ALL - joins all the occurences of a value v in both R and S. $\{1, 2, 1, 3\} \cup \{1, 2\} = \{1, 2, 1, 3, 1, 2\}$
+
+
+EXCEPT ALL - takes the proper difference of sets R and S. $\{1, 2, 1, 3\} - \{1, 2\} = \{1, 3\}
 
 
 
