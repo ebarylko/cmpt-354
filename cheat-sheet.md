@@ -107,6 +107,55 @@ an entity set whose keys come from other entity sets
 
 ISA relationships: B isa A means that B inherits everything A has, including its keys and attributes.
 
+Entity-in-all-superclass:
+An entity belongs in the table that represents the subclass they are a part of. 
+An entity can be in multiple tables, including the table representing its superclass.
+The subclass holds the keys it inherits plus its own attributes.
+Note: all the users are in one table, but attributes belonging
+to different subclasses are scattered and may not be easily gathered.
+
+Entity-in-most-specific-class:
+An entity belongs to the most specific table which describes the subclass they are.
+Note: Entities are scattered in different tables, but the only the attributes relevant to the 
+table are present
+
+All-entities-in-one-table:
+An entity has all values from the base entity plus NULL values for the attributes belonging to 
+the subclasses.
+Note: Everything is in one table, but it can be complicated if the class hierarchy is complex
+
+
+Functional dependency:
+$X \rightarrow Y$ iff for two tuples A and B who share the same $X$ values, they also share the 
+same $Y$ values.
+
+Trivial FD: $RHS \subseteq LHS$ 
+
+Non trivial FD: $RHS \cap LHS = \emptyset$ 
+
+Superkey: a key which has trivial attributes.
+
+Closure of an attribute: for an attribute X, $X^{+}$ is the set of all attributes which can 
+be functionally determined by X.
+
+If $X \rightarrow Y$ follows from a set of FDs, it means that $Y \subseteq X^{+}$.
+
+Armstrong's axioms:
+
+Reflexivity: if $Y \subseteq X$, $X \rightarrow Y$.
+
+Augmentation: if $X \rightarrow Y, XZ \rightarrow YZ$ for any Z.
+
+Transitivity: if $X \rightarrow Y$ and $Y \rightarrow Z$, then $X \rightarrow Z$.
+
+Splitting: if $X \rightarrow YZ$, then $X \rightarrow Y$, $X \rightarrow Z$
+
+Combining: if $X \rightarrow Y$ and $X \rightarrow Z$, then $X \rightarrow YZ$
+
+
+
+
+
 
 
 
