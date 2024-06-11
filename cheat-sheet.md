@@ -91,7 +91,7 @@ attribute to R to its matching attribute in (A1, A2, A3, ... AN).
 Motonone operators:
 An operator p such that $p(a, b) \subseteq p(a', b)$
 
-Ex: $\{1, 2, 3\} - \{2, 3\}$ is monotone, since you can always add more 
+Ex: ${1, 2, 3} - {2, 3}$ is monotone, since you can always add more 
 to the first set, and you know that 1 will always be in the resulting set.
 
 
