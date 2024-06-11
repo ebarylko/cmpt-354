@@ -119,13 +119,11 @@ In a relationship, the keys are the keys of the connected entities plus the keys
 
 Multiplicity of relationships:
 
-Many to many: an entitiy in E is related to zero or more entities in F
+* Many to many: an entitiy in E is related to zero or more entities in F
 
-One to many: each entity in E is related to zero or more entities in F, each entity in F is related 
+* One to many: each entity in E is related to zero or more entities in F, each entity in F is related to zero or one entity in E
 
-to zero or one entity in E
-
-One to one: Each entity in E is related to exactly one entity in F and vice versa.
+* One to one: Each entity in E is related to exactly one entity in F and vice versa.
 
 Weak entity set: 
 an entity set whose keys come from other entity sets
@@ -134,24 +132,24 @@ ISA relationships: B isa A means that B inherits everything A has, including its
 
 Entity-in-all-superclass:
 
-An entity belongs in the table that represents the subclass they are a part of. 
+* an entity belongs in the table that represents the subclass they are a part of. 
 
-An entity can be in multiple tables, including the table representing its superclass.
+* an entity can be in multiple tables, including the table representing its superclass.
 
-The subclass holds the keys it inherits plus its own attributes.
+* the subclass holds the keys it inherits plus its own attributes.
 
-Note: all the users are in one table, but attributes belonging
+* all the users are in one table, but attributes belonging
 to different subclasses are scattered and may not be easily gathered.
 
 Entity-in-most-specific-class:
-An entity belongs to the most specific table which describes the subclass they are.
-Note: Entities are scattered in different tables, but the only the attributes relevant to the 
+* an entity belongs to the most specific table which describes the subclass they are.
+* Entities are scattered in different tables, but the only the attributes relevant to the 
 table are present
 
 All-entities-in-one-table:
-An entity has all values from the base entity plus NULL values for the attributes belonging to 
+* An entity has all values from the base entity plus NULL values for the attributes belonging to 
 the subclasses.
-Note: Everything is in one table, but it can be complicated if the class hierarchy is complex
+* Everything is in one table, but it can be complicated if the class hierarchy is complex
 
 
 Functional dependency:
