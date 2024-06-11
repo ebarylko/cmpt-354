@@ -153,6 +153,34 @@ Splitting: if $X \rightarrow YZ$, then $X \rightarrow Y$, $X \rightarrow Z$
 Combining: if $X \rightarrow Y$ and $X \rightarrow Z$, then $X \rightarrow YZ$
 
 
+Lossly decomposition: For relations T, R, and S, $S \bowtie T \subset R$.
+
+A lossless decomposition is one where joining the separated tables returns you the 
+original tables.
+
+R is in BCNF if for any nontrivial FD $X \rightarrow Y$ in R, X is a superkey.
+
+A table can be in BCNF and have redundancy.
+
+MVDs:
+
+Every FD is an MVD.
+
+If $X \twoheadrightarrow Y$, then $X \twoheadrightarrow R - Y - X$.
+
+
+
+4NF:
+
+For every nontrivial MVD $X \twoheadrightarrow Y$, X is a superkey.
+
+Decomposing 4NF violations:
+1. Find a nontrivial MVD $X \twoheadrightarrow Y$ where X is not a superkey
+2. Decompose R into R2 and R3, where R2 has X and Y, and R3 and X and R - X - Y.
+3. Repeat steps 1 and 2 on the new relations until everything is in 4NF
+
+
+
 
 
 
