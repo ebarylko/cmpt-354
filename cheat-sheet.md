@@ -204,7 +204,12 @@ the values being kept are those which return true for the predicate, and NULL
 is neither true nor false.
 
 Set operations:
-INTERSECT, UNION, EXCEPT
+
+INTERSECT 
+
+UNION 
+
+EXCEPT 
 
 Bag operations: 
 
@@ -217,9 +222,96 @@ UNION ALL - joins all the occurences of a value v in both R and S. $\{1, 2, 1, 3
 EXCEPT ALL - takes the proper difference of sets R and S. $\{1, 2, 1, 3\} - \{1, 2\} = \{1, 3\}
 
 
+Quantified subqueries:
+
+Where x op ALL(subquery): true iff for all t in the results of the subquery, x op t.
+
+Where x op ANY/SOME(subquery): true iff for for at least one t in the results of the subquery, x op t.
+
+Order of keywords:
+
+SELECT 
+FROM 
+WHERE
+GROUP BY
+HAVING 
+ORDER BY
+
+Remember: ORDER BY automatically sorts ascending. To change this, you must add DESC to the attribute being ordered by.
+
+Outer joins:
+
+Full outer join: gives the result of $R \bowtie S$ plus the addition of any tuples from R and S which did not have a common attribute between them.
+
+Left outer join: gives the result of $R \bowtie S$ plus the addition of the dangling R tuples padded with NULL values.
 
 
+Left outer join: gives the result of $R \bowtie S$ plus the addition of the dangling S tuples padded with NULL values.
 
+
+Syntax: A (FULL | RIGHT | LEFT) OUTER JOIN B ON p, where p is the predicate determining if the join should occur.
+
+
+Inserting values: 
+
+INSERT INTO table VALUES [value to be inserted]
+
+INSERT INTO table [result of a subquery]
+
+Delete values:
+
+DELETE FROM table: removes everything in the table
+
+DELETE FROM table [condition]: removes items from the table which satisfy the condition
+
+Updating values:
+
+The values must already exist in the table.
+
+UPDATE table_name SET new_value_assignments [WHERE condition]: performs the new value assignments to the given table 
+if the condition is true.
+
+
+Creating tables:
+
+CREATE TABLE table_name (
+attribute declarations
+)
+
+For attribute declarations, the format is name type constraint
+
+
+Constraints:
+
+Help assure certain qualities about your data and helps the DBMS optimize.
+
+NOT NULL: attribute can not be NULL
+
+PRIMARY KEY: attribute is primary key (a primary key can never be NULL). At most one primary key per table.
+
+UNIQUE: attribute is unique among all other instances of the relation. Can have any amount of unique keys in a table. 
+
+To form a primary key with multiple attributes, you must put into the table creation PRIMARY KEY(attribute list)
+
+Referenced keys in a table must refer to a primary key.
+
+Referencing a foreign key:
+
+Name type constraint REFERENCES table(attributes) or FOREIGN KEY (attributes) REFERENCES table(attributes) (second form mustbe below the other attribute declarations)
+
+Maintaining referential integrity:
+
+If table A has a foreign key in table B, then if 
+we add or update a tuple in A such that the foreign key does not point to 
+a value existing in B, the DBMS will reject that.
+
+If we delete or update a tuple in B, then there are three options:
+
+1. The tuple in A that depended on the value in B is deleted
+2. The tuple in A that depended on the value in B is updated to match the deleted/updated tuple in B (if v is deleted in B, then t in A is deleted. If v is updated, then t is updated)
+3. The tuple in A has the value that refers to a tuple in B to NULL regardless if the tuple in B was updated/deleted
+
+Syntax: attr_a references table(attr_b) [on update set (null | cascade)] [on delete set (null | cascade)]
 
 
 
