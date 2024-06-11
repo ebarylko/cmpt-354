@@ -313,6 +313,40 @@ If we delete or update a tuple in B, then there are three options:
 
 Syntax: attr_a references table(attr_b) [on update set (null | cascade)] [on delete set (null | cascade)]
 
+Defering checks:
+
+If you can defer a check till before a transaction completes, you can avoid violating certain properties in the 
+tables, ie foreign keys.
+
+Initially defered: checking only occurs before each transaction commits.
+
+Initially immediate: check will be made after each statement.
+
+Assertions:
+
+Conditions on a table that are always checked to make sure they hold.
+
+Syntax: CREATE ASSERTION name CHECK condition
+
+Checks:
+
+Make sure that an attribute mantains a certain property
+
+Syntax for in a table declaration: name type [constraints,] CHECK condition
+
+A check in a table about a foreign key does not monitor the changes to the table from where the key is referenced from
+
+Modifying the table: 
+
+Add or drop column: ALTER TABLE name (ADD | DROP) COLUMN column_name 
+
+Rename column: ALTER TABLE name RENAME COLUMN old_name TO new_name
+
+Modify datatype: ALTER TABLE name ALTER COLUMN column_name type
+
+Add constraint: ALTER TABLE name ADD CONSTRAINT name constraint
+
+Remove constraint: ALTER TABLE name DROP CONSTRAINT name
 
 
 
