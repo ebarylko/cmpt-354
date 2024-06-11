@@ -6,39 +6,55 @@ Data model: mathematical description of describing the data
 Description includes structure of the data, operations on the data, and constraints of the data.
 
 Constraints: limits on the data
-Ex: name can never be longer than 30 characters
-Multiple types of constraints: 
-Domain type: what limits are on the attribute for the domain? age cannot be negative
-Integrity constraint: value is unique across all instances
 
+Ex: name can never be longer than 30 characters
+
+Multiple types of constraints: 
+
+Domain type: what limits are on the attribute for the domain? age cannot be negative
+
+Integrity constraint: value is unique across all instances
 
 Common data models: Relational, Key-Value, Semistructured
 
 Relational:
+
 Data structured as tables
+
 Query language can be RA, RC, SQL
+
 Can add constraints on attributes
 
 Key-value:
+
 Key is an integer or string, value can be anything
+
 Query operators are get(key) and put(key, value)
+
 Constraints on the data could be that the key is unique or the value is not null
 
 Semistructured:
+
 Data is structured as a tree
+
 Example constraints: each person needs an id and birthdate associated with them
 
-
 Schema:
+
 shows the logical structure of the data
+
 Defined at setup time
 
 Instance:
+
 Represents the data content
+
 All entities that belong to a specific group?
 
 Ex:
+
 Schema for User: User(uid, name, class)
+
 Instance: {(1, "a", CMPT300), (2, "b", CMPT254)}
 
 Core operators:
@@ -74,6 +90,7 @@ attribute to R to its matching attribute in (A1, A2, A3, ... AN).
 
 Motonone operators:
 An operator p such that $p(a, b) \subseteq p(a', b)$
+
 Ex: $\{1, 2, 3\} - \{2, 3\}$ is monotone, since you can always add more 
 to the first set, and you know that 1 will always be in the resulting set.
 
@@ -84,22 +101,30 @@ Relational algebra has no recursion.
 
 Key: a set of attributes K such that K uniquely identifies an instance of a relation. 
 K must be minimal (a proper subset of K cannot function as a Key).
+
 Ex: User(uid, name, age).
 uid is key, but age nor {uid, age} is a key
 
 Primary key: one attribute of K
 
 Entity: a thing or item of a collection
+
 Entity set: a collection of entities
+
 Attributes: properties of entities or relationships
+
 Relationship: an association among entities showing how one is related to the other and vice versa
 
 In a relationship, the keys are the keys of the connected entities plus the keys of the relationship.
 
 Multiplicity of relationships:
+
 Many to many: an entitiy in E is related to zero or more entities in F
+
 One to many: each entity in E is related to zero or more entities in F, each entity in F is related 
+
 to zero or one entity in E
+
 One to one: Each entity in E is related to exactly one entity in F and vice versa.
 
 Weak entity set: 
@@ -108,9 +133,13 @@ an entity set whose keys come from other entity sets
 ISA relationships: B isa A means that B inherits everything A has, including its keys and attributes.
 
 Entity-in-all-superclass:
+
 An entity belongs in the table that represents the subclass they are a part of. 
+
 An entity can be in multiple tables, including the table representing its superclass.
+
 The subclass holds the keys it inherits plus its own attributes.
+
 Note: all the users are in one table, but attributes belonging
 to different subclasses are scattered and may not be easily gathered.
 
