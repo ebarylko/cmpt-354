@@ -72,10 +72,19 @@ CREATE TRIGGER TG_TradeSeqAppendOnly
 
 CREATE FUNCTION TF_BrokerNotAccountOwner() RETURNS TRIGGER AS $$
 BEGIN
-  -- YOUR IMPLEMENTATION GOES HERE >>>
-  -- Do not modify the CREATE TRIGGER statements that follow.
+    if tg_table_name = 'broker' THEN
+        if new.pid in (select pid from owns) THEN
+            raise exception 'A broker can not own an account';
+        end if;
+    end if;
+
+    if tg_table_name = 'owns' THEN
+        if new.pid in (select pid from broker) THEN
+            raise exception 'A broker can not own an account';
+        end if;
+    end if;
+
   RETURN NEW;
-  -- <<< YOUR IMPLEMENTATION ENDS HERE
 END;
 $$ LANGUAGE plpgsql;
 
