@@ -105,14 +105,19 @@ CREATE TRIGGER TG_BrokerNotAccountOwner_Owns
 -- account holdings, computed from the Trade table. You may assume
 -- that all accounts start with holding nothing and all transactions
 -- are recorded in Trade.
-
 CREATE VIEW Holds(aid, sym, shares) AS
-  -- YOUR IMPLEMENTATION GOES HERE >>>
-  -- Do not modify the CREATE FUNCTION and TRIGGER statements that follow.
-  -- Stub implementation (incorrect):
-  SELECT DISTINCT aid, sym, 10000.00
-  FROM Account, Stock;
-  -- <<< YOUR IMPLEMENTATION ENDS HERE
+    with Bought(aid, sym, shares) as
+        (select aid, sym, sum(shares)
+             from Trade
+             where type = 'buy'
+             group by aid, sym),
+        Sold(aid, sym, shares) as
+            (select aid, sym, sum(shares)
+             from Trade
+             where type = 'sell'
+             group by aid, sym)
+        select B.aid, B.sym, B.shares - Coalesce(S.shares, 0) as shares
+            from Bought B left outer join Sold S on B.aid = S.aid and B.sym = S.sym;
 
 CREATE FUNCTION TF_NoOverSell() RETURNS TRIGGER AS $$
 BEGIN
