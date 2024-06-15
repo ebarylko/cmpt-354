@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import time, datetime
 
 app = Flask(__name__)
@@ -33,9 +34,9 @@ def getOwner():
     	If the account does not exist, return {'pid': -1}
     """
     aid = int(request.args.get('aid', -1))
-	# complete the function by replacing the line below with your code
-    res = {'pid': -1}
-    return jsonify(res)
+    query = text("Select pid from Owns O where O.aid = {}".format(aid))
+    pid = db.session.execute(query).scalar()
+    return jsonify({'pid': pid or -1})
 
 @app.route('/getHoldings')
 def getHoldings():
