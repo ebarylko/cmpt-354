@@ -30,7 +30,7 @@ CREATE TABLE Stock
 CREATE TABLE Trade
 (aid INTEGER NOT NULL REFERENCES Account(aid),
  seq INTEGER NOT NULL,
- type CHAR(4) NOT NULL,
+ type CHAR(4) NOT NULL check (type in ('buy', 'sell')),
  timestamp TIMESTAMP NOT NULL,
  sym CHAR(5) NOT NULL REFERENCES Stock(sym),
  shares DECIMAL(10,2) NOT NULL,
