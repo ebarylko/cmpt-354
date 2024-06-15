@@ -48,13 +48,16 @@ CREATE TABLE Trade
 
 CREATE FUNCTION TF_TradeSeqAppendOnly() RETURNS TRIGGER AS $$
 BEGIN
-  -- YOUR IMPLEMENTATION GOES HERE >>>
-  -- Do not modify the CREATE TRIGGER statement that follows.
   IF TG_OP IN ('DELETE', 'UPDATE') THEN
     RAISE EXCEPTION 'trade table is append-only';
   END IF;
+  IF new.seq < ANY(select seq from Trade T where T.aid = new.aid) THEN
+      RAISE EXCEPTION  'New trade cannot use an old sequence id';
+  end if;
+  IF new.timestamp < ANY(select timestamp from Trade T where T.aid = new.aid) THEN
+      RAISE exception 'New trade cannot occur before the previous latest trade';
+  end if;
   RETURN NEW;
-  -- <<< YOUR IMPLEMENTATION ENDS HERE
 END;
 $$ LANGUAGE plpgsql;
 
