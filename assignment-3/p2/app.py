@@ -44,16 +44,21 @@ def getOwner():
 @app.route('/getHoldings')
 def getHoldings():
     """
-        This HTTP method takes aid and sym as input, 
+        This HTTP method takes aid and sym as input,
         and returns the total share of holdings for a stock sym of an account
-        If the stock does not exist, the account does not exist, 
-        or the account does not hold any share of the stock, return {'shares': 0})
-        DO NOT USE the view you create in P1
-    """
+        If the stock or the account does not exist, return `{'shares': -1}`;
+        if the account does not hold any share of the stock, return `{'shares': 0}`.
+        Otherwise returns `{'shares': total_share}`.
+        Do NOT use the view you defined in P1.
+        """
     aid = int(request.args.get('aid', -1))
     sym = request.args.get('sym', '')
-    query = text("select sum(case when type = 'buy' then shares else shares * -1 end) as shares from trade T where T.sym = :sym and T.aid = :aid")
-    shares = db.session.execute(query, {"sym": sym, "aid": aid}).scalar()
+    validation_query = text("select exists(select aid from account where aid=:aid) and exists(select sym from stock where sym=:sym);")
+    aid_and_sym_exists = db.session.execute(validation_query, {"aid": aid, "sym": sym}).scalar()
+    shares = -1
+    if aid_and_sym_exists:
+        query = text("select coalesce(sum(case when type = 'buy' then shares else shares * -1 end), 0) as shares from trade T where T.sym = :sym and T.aid = :aid")
+        shares = db.session.execute(query, {"sym": sym, "aid": aid}).scalar()
     return jsonify({'shares': shares})
 
 def currentTime():
