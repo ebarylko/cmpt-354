@@ -38,8 +38,8 @@ def getOwner():
     aid = int(request.args.get('aid', -1))
     query = text("Select pid from Owns O where O.aid = :aid;")
     pids = db.session.execute(query, {"aid": aid}).scalars()
-    response = [{aid: int(pid)} for pid in pids]
-    return jsonify(response)
+    response = [{"pid": int(pid)} for pid in pids]
+    return jsonify(response or [{"pid": -1}])
 
 @app.route('/getHoldings')
 def getHoldings():
