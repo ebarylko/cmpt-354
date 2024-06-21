@@ -72,16 +72,12 @@ CREATE TRIGGER TG_TradeSeqAppendOnly
 
 CREATE FUNCTION TF_BrokerNotAccountOwner() RETURNS TRIGGER AS $$
 BEGIN
-    if tg_table_name = 'broker' THEN
-        if new.pid in (select pid from owns) THEN
+    if tg_table_name = 'broker' and new.pid in (select pid from owns)THEN
             raise exception 'A broker can not own an account';
-        end if;
     end if;
 
-    if tg_table_name = 'owns' THEN
-        if new.pid in (select pid from broker) THEN
+    if tg_table_name = 'owns' and new.pid in (select pid from broker) THEN
             raise exception 'A broker can not own an account';
-        end if;
     end if;
 
   RETURN NEW;
@@ -106,18 +102,10 @@ CREATE TRIGGER TG_BrokerNotAccountOwner_Owns
 -- that all accounts start with holding nothing and all transactions
 -- are recorded in Trade.
 CREATE VIEW Holds(aid, sym, shares) AS
-    with Bought(aid, sym, shares) as
-        (select aid, sym, sum(shares)
-             from Trade
-             where type = 'buy'
-             group by aid, sym),
-        Sold(aid, sym, shares) as
-            (select aid, sym, sum(shares)
-             from Trade
-             where type = 'sell'
-             group by aid, sym)
-        select B.aid, B.sym, B.shares - Coalesce(S.shares, 0) as shares
-            from Bought B left outer join Sold S on B.aid = S.aid and B.sym = S.sym;
+select aid, sym, sum(case when type = 'buy' then shares else shares * -1 end) as shares
+from trade
+group by sym, aid;
+
 
 CREATE FUNCTION TF_NoOverSell() RETURNS TRIGGER AS $$
 BEGIN

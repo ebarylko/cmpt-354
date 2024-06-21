@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
+from sqlalchemy import text, select
 import time, datetime
+
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ db_name = 'pits'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@localhost/{}'.format(psql_user, psql_password, db_name)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 @app.route('/')
 def index():
@@ -34,9 +36,10 @@ def getOwner():
     	If the account does not exist, return {'pid': -1}
     """
     aid = int(request.args.get('aid', -1))
-    query = text("Select pid from Owns O where O.aid = {}".format(aid))
-    pid = db.session.execute(query).scalar()
-    return jsonify({'pid': pid or -1})
+    query = text("Select pid from Owns O where O.aid = :aid;")
+    pids = db.session.execute(query, {"aid": aid}).scalars()
+    response = [{aid: int(pid)} for pid in pids]
+    return jsonify(response)
 
 @app.route('/getHoldings')
 def getHoldings():
@@ -72,12 +75,11 @@ def trade():
         Ideally, you need to send a HTTP POST request for such editing requests, 
         but we just choose GET for easier test
     """
-    aid = request.form.get('aid')
-    sym = request.form.get('sym')
-    type = request.form.get('type')
-    shares = request.form.get('shares')
-    price = request.form.get('price')
-    
+    aid = int(request.args.get('aid', -1))
+    sym = request.args.get('sym', '')
+    type = request.args.get('type', '')
+    shares = float(request.args.get('shares', -1))
+    price = float(request.args.get('price', -1))
     # complete the function by replacing the line below with your code
     response = "fail"
         
