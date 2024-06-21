@@ -11,3 +11,8 @@ def test_getOwner(path, expected):
     response = client.get(path).text
     assert expected in response
 
+@pytest.mark.parametrize("path, expected", [("/getHoldings?aid=150&sym=AAPL", "4.00")])
+def test_getHoldings(path, expected):
+    client = app.test_client()
+    response = client.get(path).text
+    assert expected in response

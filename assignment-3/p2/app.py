@@ -52,8 +52,8 @@ def getHoldings():
     """
     aid = int(request.args.get('aid', -1))
     sym = request.args.get('sym', '')
-    # complete the function by replacing the line below with your code
-    shares = 0
+    query = text("select sum(case when type = 'buy' then shares else shares * -1 end) as shares from trade T where T.sym = :sym and T.aid = :aid")
+    shares = db.session.execute(query, {"sym": sym, "aid": aid}).scalar()
     return jsonify({'shares': shares})
 
 def currentTime():
