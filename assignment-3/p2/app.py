@@ -85,11 +85,31 @@ def trade():
     type = request.args.get('type', '')
     shares = float(request.args.get('shares', -1))
     price = float(request.args.get('price', -1))
-    # complete the function by replacing the line below with your code
-    response = "fail"
-        
-    response = {"res": response}
-    return jsonify(response)
+    validation_query = text("select exists(select aid from account where aid=:aid) and exists(select sym from stock where sym=:sym);")
+    shares_query = text("select coalesce(sum(case when type = 'buy' then shares else shares * -1 end), -1) from trade T where T.aid=:aid and T.sym=:sym")
+    aid_and_sym_exists = db.session.execute(validation_query, {"aid": aid, "sym": sym}).scalar()
+    total_shares = db.session.execute(shares_query, {"aid": aid, "sym": sym}).scalar()
+    is_not_oversell = type == 'buy' or total_shares >= shares
+    res = "fail"
+    if aid_and_sym_exists and is_not_oversell:
+        latest_seq_id = db.session.execute(text("select coalesce(max(seq), 0) from trade where aid=:aid and sym=:sym"),
+                                           {"aid": aid, "sym": sym}).scalar() + 1
+        latest_trade_query = text("select coalesce(max(timestamp), current_timestamp) from trade where aid=:aid and sym=:sym")
+
+        latest_trade_time = db.session.execute(latest_trade_query, {"aid": aid, "sym": sym}).scalar()
+
+        add_trade_query = text("Insert into trade values (:aid, :seq, :type, :timestamp, :sym, :shares, :price)")
+        db.session.execute(add_trade_query, {"aid": aid,
+                                             "seq": latest_seq_id,
+                                             "type": type,
+                                             "timestamp": latest_trade_time,
+                                             "sym": sym,
+                                             "shares": shares,
+                                             "price": price})
+
+        res = latest_seq_id
+
+    return jsonify({"res": res})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

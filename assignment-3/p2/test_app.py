@@ -18,3 +18,11 @@ def test_getHoldings(path, expected):
     client = app.test_client()
     response = client.get(path).text
     assert expected in response
+
+
+@pytest.mark.parametrize("path, expected", [("/trade?aid=300&sym=GOOGL&type=buy&shares=100.00&price=99.99", "2"),
+                                            ("/trade?aid=138&sym=AAPL&type=sell&shares=101.00&price=200.20", "fail")])
+def test_trade(path, expected):
+    client = app.test_client()
+    response = client.get(path).text
+    assert expected in response
