@@ -92,11 +92,11 @@ def trade():
     is_not_oversell = type == 'buy' or total_shares >= shares
     res = "fail"
     if aid_and_sym_exists and is_not_oversell:
-        latest_seq_id = db.session.execute(text("select coalesce(max(seq), 0) from trade where aid=:aid and sym=:sym"),
-                                           {"aid": aid, "sym": sym}).scalar() + 1
-        latest_trade_query = text("select coalesce(max(timestamp), current_timestamp) from trade where aid=:aid and sym=:sym")
+        latest_seq_id = db.session.execute(text("select coalesce(max(seq), 0) from trade where aid=:aid"),
+                                           {"aid": aid}).scalar() + 1
+        latest_trade_query = text("select coalesce(max(timestamp), current_timestamp) from trade where aid=:aid")
 
-        latest_trade_time = db.session.execute(latest_trade_query, {"aid": aid, "sym": sym}).scalar()
+        latest_trade_time = db.session.execute(latest_trade_query, {"aid": aid}).scalar()
 
         add_trade_query = text("Insert into trade values (:aid, :seq, :type, :timestamp, :sym, :shares, :price)")
         db.session.execute(add_trade_query, {"aid": aid,
