@@ -52,7 +52,7 @@ BEGIN
     RAISE EXCEPTION 'trade table is append-only';
   END IF;
   IF new.seq < ANY(select seq from Trade T where T.aid = new.aid) THEN
-      RAISE EXCEPTION  'New trade cannot use an old sequence id';
+      RAISE EXCEPTION  'New trade cannot use an old trade id';
   end if;
   IF new.timestamp < ANY(select timestamp from Trade T where T.aid = new.aid) THEN
       RAISE exception 'New trade cannot occur before the previous latest trade';
@@ -72,13 +72,19 @@ CREATE TRIGGER TG_TradeSeqAppendOnly
 
 CREATE FUNCTION TF_BrokerNotAccountOwner() RETURNS TRIGGER AS $$
 BEGIN
-    if tg_table_name = 'broker' and new.pid in (select pid from owns)THEN
-            raise exception 'A broker can not own an account';
+
+    if tg_table_name = 'broker' and new.pid in (select pid from owns)
+        or tg_table_name = 'owns' and new.pid in (select pid from broker) THEN
+        raise exception 'A broker can not own an account';
     end if;
 
-    if tg_table_name = 'owns' and new.pid in (select pid from broker) THEN
-            raise exception 'A broker can not own an account';
-    end if;
+--     if tg_table_name = 'broker' and new.pid in (select pid from owns)THEN
+--             raise exception 'A broker can not own an account';
+--     end if;
+--
+--     if tg_table_name = 'owns' and new.pid in (select pid from broker) THEN
+--             raise exception 'A broker can not own an account';
+--     end if;
 
   RETURN NEW;
 END;

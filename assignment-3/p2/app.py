@@ -98,18 +98,19 @@ def trade():
 
         latest_trade_time = db.session.execute(latest_trade_query, {"aid": aid}).scalar()
 
-        add_trade_query = text("Insert into trade values (:aid, :seq, :type, :timestamp, :sym, :shares, :price)")
-        db.session.execute(add_trade_query, {"aid": aid,
+        add_trade_stmt = text("Insert into trade values (:aid, :seq, :type, :timestamp, :sym, :shares, :price)")
+        db.session.execute(add_trade_stmt, {"aid": aid,
                                              "seq": latest_seq_id,
                                              "type": type,
                                              "timestamp": latest_trade_time,
                                              "sym": sym,
                                              "shares": shares,
                                              "price": price})
+        db.session.commit()
 
         res = latest_seq_id
 
-    return jsonify({"res": res})
+    return jsonify({"id": res, "aid": aid})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

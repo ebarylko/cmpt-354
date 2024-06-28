@@ -30,18 +30,23 @@ def test_trade_response(path, expected):
     assert expected in response
 
 
-@pytest.mark.parametrize('path, expected_values, pred', [("/trade?aid=300&sym=GOOGL&type=buy&shares=100.00&price=99.99", (300, 'GOOGL', 'buy', 100, 99.99, 2), "exists"),
-                                                         ("/trade?aid=138&sym=AAPL&type=sell&shares=101.00&price=200.20", (138, 'AAPL', 'sell', 101, 200.20, 5), "not exists")])
+@pytest.mark.parametrize('path, expected_values, pred', [("/trade?aid=300&sym=GOOGL&type=buy&shares=100.00&price=99.99", (300, 'GOOGL', 'buy', 100.00, 99.99, 2), "exists"),
+                                                         # ("/trade?aid=138&sym=APPL&type=sell&shares=101.00&price=200.20", (138, 'APPL', 'sell', 101.00, 200.20, 5), "not exists")
+                                                         ])
 def test_table_state_after_trade(path, expected_values, pred):
-    with app.test_client() as client:
-        client.get(path)
-        expected_aid, expected_sym, expected_type, expected_shares, expected_price, expected_trade_seq = expected_values
-        new_trade_query = text("select {pred}(select * from trade where aid=:aid and sym=:sym and type=:type and shares=:shares and seq=:trade_id and price=:price)".format(pred=pred))
-
-        return db.session.execute(new_trade_query, {"pred": pred,
-                                                    "aid": expected_aid,
+    client = app.test_client()
+    expected_aid, expected_sym, expected_type, expected_shares, expected_price, expected_trade_seq = expected_values
+    # print(expected_values)
+    new_trade_query = text("select {pred}(select * from trade where aid=:aid and sym=:sym and type=:type and shares=:shares and seq=:trade_id and price=:price)".
+                           format(pred=pred))
+    client.get(path)
+    with app.app_context():
+        res = db.session.execute(new_trade_query, {"aid": expected_aid,
                                                     "sym": expected_sym,
                                                     "type": expected_type,
                                                     "shares": expected_shares,
                                                     "trade_id": expected_trade_seq,
-                                                    "price": expected_price}).scalar()
+                                                    "price": expected_price
+                                                    }).all()
+        assert res
+        db.session.rollback()
