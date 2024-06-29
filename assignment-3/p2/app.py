@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # Update the below configuration with your existing PostgreSQL database details
 psql_user = 'postgres'
-psql_password = 'slouch-fest-concept-farrier'
+psql_password = ''
 db_name = 'pits'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{}:{}@localhost/{}'.format(psql_user, psql_password, db_name)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
