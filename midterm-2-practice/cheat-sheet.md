@@ -95,3 +95,21 @@ SQL injection:
 Passing in strings which contain valid SQL statements which are meant 
 to have an adverse effect.
 
+
+## Two tier architecture
+
+Client/server architecture. Server implements the business logic and 
+data management.
+
+Separate presentation from obtaining the data.
+
+## Three tier architecture
+
+The three tiers are database, client, and server
+
+The server layer handles requests to the database 
+
+The database layer handles the data in one or more databases and processes the queries
+
+The client server passes requests to the server layer and displays outputs to the user
+
