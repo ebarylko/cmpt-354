@@ -113,3 +113,19 @@ The database layer handles the data in one or more databases and processes the q
 
 The client server passes requests to the server layer and displays outputs to the user
 
+## ACID
+
+Atomicity: A transaction either completes or aborts
+
+Consistency: All invariants must be satisfied before and after a transaction completes
+
+Isolation: All transactions must run as if there were no other transactions occurring
+
+Durability: If the database crashes after it makes a transaction, the effects of the 
+transaction must be present when the database restores itself
+
+
+## Transactions
+
+COMMIT stores the transaction, ROLLBACK undoes the state of the database to before the transaction started.
+
