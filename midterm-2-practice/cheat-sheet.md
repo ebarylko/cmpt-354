@@ -129,3 +129,20 @@ transaction must be present when the database restores itself
 
 COMMIT stores the transaction, ROLLBACK undoes the state of the database to before the transaction started.
 
+Schema operations implicitly commit the current transaction
+
+Atomicity is achieved using logging so steps which violate any constraint are noted and 
+the database can move back to a previous state.
+
+Transactions are done using a serializable schedule, which allows transactions to interleave 
+and execute concurrently. However, the result must be the same as if the transactions were 
+executed in serial order.
+
+### Isolation levels
+
+An isolation level only affect the data that the specific transaction sees. Just because 
+one transaction is read committed, it does not mean any of the other transactions are 
+read committed. 
+
+Serializable: every transaction occurs before or after this transaction
+
