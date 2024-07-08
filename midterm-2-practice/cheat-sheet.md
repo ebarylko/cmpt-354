@@ -144,5 +144,16 @@ An isolation level only affect the data that the specific transaction sees. Just
 one transaction is read committed, it does not mean any of the other transactions are 
 read committed. 
 
-Serializable: every transaction occurs before or after this transaction
+Serializable: every transaction with this isolation can only read data that occurred before 
+this transaction began. Cannot read uncommitted data from other transactions.
+
+Read-uncommitted: the transaction can read data from other transactions which have not been 
+committed. 
+
+Read-committed: the transaction can only read data that has been committed by other transactions.
+This does not prevent it from obtaining different results from the same query if the 
+query is accessing data which has been committed. 
+
+Repeatable-read: the transaction will see the same data along with potentially more data 
+it had when running the first query on subsequent queries.
 
