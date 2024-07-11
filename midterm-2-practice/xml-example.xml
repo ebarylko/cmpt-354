@@ -1,0 +1,133 @@
+<ships>
+    <class name = "kongo" type = "be" country = "japan"
+           numguns = "8" bore = "14" displacement = "32000">
+        <ship name = "kongo" launched = "1913" />
+        <ship name = "hiei" launched = "1914" />
+        <ship name = "kirishima" launched = "1915">
+            <battle outcome = "sunk">guadalcanal
+            </battle>
+        </ship>
+        <ship name = "haruna" launched = "1915" />
+    </class>
+    <class name = "north carolina" type = "bb" country = "usa"
+           numguns = "9" bore = "16" displacement = "37000">
+        <ship name = "north carolina" launched = "1941" />
+        <ship name = "washington" launched = "1941">
+            <battle outcome = "ok">guadalcanal
+            </battle>
+        </ship>
+    </class>
+    <class name = "tennessee" type = "bb" country = "usa"
+           numguns = "12" bore = "14" displacement = "32000">
+        <ship name = "tennessee" launched = "1920">
+            <battle outcome = "ok">surigao strait
+            </battle>
+        </ship>
+        <ship name = " california " launched = "1921">
+        <battle outcome = "ok">surigao strait
+        </battle>
+    </class>
+    <class name = "king george v" type = "bb"
+           country = "great britain "
+           numguns = "10" bore = "14" displacement = "32000">
+        <ship name = "king george v" launched = "1940" />
+        <ship name = "prince of wales" launched = "1941">
+            <battle outcome = "damaged">denmark strait
+                </battle>
+                <battleoutcome="sunk" malaya />
+            </ship>
+        </class>
+        <ship name = "duke of york" launched = "1941">
+            <battle outcome = "ok">north cape
+            </battle>
+        </ship>
+        <ship name = "howe" launched = "1942" />
+        <ship name = "anson" launched = "1942" />
+    </ships>
+
+
+
+a) //ship/@name
+b) //class[@displacement > 35000]
+c) //ship[@launched < 1917]
+d) //ship[battle/@outcome = "sunk"]
+e) //ship[../@name = ./@name]/@launched
+f) //ship[battle]
+g) //ship[count(battle) >= 2]
+
+
+
+<products>
+<maker name = "a">
+<pc model = "1001" price = "2114">
+<speed>2. 66</speed>
+<ram>1024</ram>
+<harddisk>250</harddisk>
+</pc>
+<pc model = "1002" price = "995">
+<speed>2. 10</speed>
+<ram>512</ram>
+<harddisk>250</harddisk>
+</pc>
+<laptop model = "2004" price = "1150">
+<speed>2. 00</speed>
+<ram>512</ram>
+<harddisk>60</harddisk>
+<screen>13. 3</screen>
+</laptop>
+<laptop model = "2005" price = "2500">
+<speed>2. 16</speed>
+<ram>1024</ram>
+<harddisk>120</harddisk>
+<screen>17.0</screen>
+</laptop>
+</maker>
+<maker name = "e">
+<pc model = "1011" price = "959">
+<speed>l. 86</speed>
+<ram>2048</ram>
+<harddisk>160</harddisk>
+</pc>
+<pc model = "1012" price = "649">
+<speed>2. 80</speed>
+<ram>1024</ram>
+<harddisk>160</harddisk>
+</pc>
+<laptop model = "2001" price = "3673">
+<speed>2. 00</speed>
+<ram>2048</ram>
+<harddisk>240</harddisk>
+<screen>20.1</screen>
+</laptop>
+<printer model = "3002" price = "239">
+<color>false</color>
+<type>laser</type>
+</printer>
+<maker name = "h">
+<printer model = "3006" price = "100">
+<color>true</color>
+<type>ink-jet</type>
+</printer>
+<printer model = "3007" price = "200">
+<color>true </color>
+<type>laser</type>
+</printer>
+</maker>
+</products>
+
+1-Find the amount of RAM on each PC
+//pc/ram
+
+2-Find the price of each product of any kind.
+/products/maker/*/@price
+
+3-Find all the printer elements
+//printer
+
+4-Find the makers of laser printers.
+//printer[type = "laser"]/../@name
+
+5-Find the makers of PC’s and/or laptops.
+//maker[pc][laptop]/@name
+
+6-Find the model numbers of PC ’s with a hard disk of at least 200 gigabyte
