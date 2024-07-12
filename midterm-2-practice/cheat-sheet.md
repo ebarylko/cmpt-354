@@ -145,15 +145,37 @@ one transaction is read committed, it does not mean any of the other transaction
 read committed. 
 
 Serializable: every transaction with this isolation can only read data that occurred before 
-this transaction began. Cannot read uncommitted data from other transactions.
+this transaction began. Cannot read uncommitted data from other transactions. Lock ranges to
+prevent insertions.
 
 Read-uncommitted: the transaction can read data from other transactions which have not been 
-committed. 
+committed. Short-duration lock: lock, access, and release immediately
+
 
 Read-committed: the transaction can only read data that has been committed by other transactions.
 This does not prevent it from obtaining different results from the same query if the 
-query is accessing data which has been committed. 
+query is accessing data which has been committed. Long duration write locks: do not release 
+write locks until commit
 
 Repeatable-read: the transaction will see the same data along with potentially more data 
-it had when running the first query on subsequent queries.
+it had when running the first query on subsequent queries. Long duration locks on all 
+data items accessed.
 
+
+## Structured vs unstructured data
+
+Relational databases require a schema, which mean all rows must conform to it. Adding or 
+removing an attribute requires the entire schema to be modified.
+
+Unstructured data has no schema, which means you can add what you like. However, there are 
+no guarantees about what the types of what you are working with.
+
+Semi-structured data is self describing and allows the structure of the data to be updated easily.
+
+HTML mixes content and presentation, while XML solely describes the content.
+
+With XML, you can describe any structure and can ship it across different platforms. 
+
+## XML
+
+You have opening and closing tags. Ex: <book> </book>
