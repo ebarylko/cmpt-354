@@ -178,4 +178,22 @@ With XML, you can describe any structure and can ship it across different platfo
 
 ## XML
 
-You have opening and closing tags. Ex: <book> </book>
+You have opening and closing tags. Ex: `<book> </book>`.
+
+Empty elements have the structure of `<elment/>`.
+
+Elements have attributes. Ex: `<element> a="1" b="2" </element>`.
+
+### Well formed XML requirements
+
+Follows lexical conventions by using `&lt` instead of `<`, `&gt` instead of `>`, and `&amp` instead of `&`.
+
+Contains a single root element.
+
+Has properly matched tags and nested elements.
+
+### Additional features
+
+Ids must start with a non-digit. Ex: `<person id='o11'> <name> John </name>  </person>`
+
+Namespaces allow you to use items stemming from different locations. Ex: `<v1:product xmlns:v1="[link to schema]"> [more content within] </v1:product>`
