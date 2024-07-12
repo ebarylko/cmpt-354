@@ -184,6 +184,10 @@ Empty elements have the structure of `<elment/>`.
 
 Elements have attributes. Ex: `<element> a="1" b="2" </element>`.
 
+Nested structures permit arbitrary graphs.
+
+Ordering is forced by document format.
+
 ### Well formed XML requirements
 
 Follows lexical conventions by using `&lt` instead of `<`, `&gt` instead of `>`, and `&amp` instead of `&`.
@@ -197,3 +201,143 @@ Has properly matched tags and nested elements.
 Ids must start with a non-digit. Ex: `<person id='o11'> <name> John </name>  </person>`
 
 Namespaces allow you to use items stemming from different locations. Ex: `<v1:product xmlns:v1="[link to schema]"> [more content within] </v1:product>`
+
+An XML document can have a DTD (Document Type Definition) which defines how the structure
+of the data will be. It also restricts the values present in the tags.
+
+### DTD
+
+#PCDATA: means that the element has a value which is text and no other elements are nested 
+within.
+Ex: `<!ELEMENT name (#PCDATA)`> means that within `<name>` and `</name>`, text will appear.
+
+`<ATLIST! element-name attribute-name type (#REQUIRED | #IMPLIED)>`: means that the attribute is an element of 
+`element-name` and has type `type`
+
+Potential types:
+
+CDATA: character string data, like #PCDATA.
+
+#REQUIRED: the attribute must be present
+
+#IMPLIED: the attribute may not be present
+
+Examples:
+
+`<!ELEMENT section (title, content?, section*)>`: A section has a title, optional content, and 
+0 or more sections.
+
+The benefits of a DTD is that you know the structure of the data and it helps with processing.
+Makes the transfer of XML easier if everyone uses the same DTD.
+
+The benefits to avoiding a DTD is that you have no limits on your structure and avoid the 
+overhead of validation.
+
+
+## XPATH
+
+Takes an expression and evaluates it going through the tree of the document.
+
+Commands:
+
+/: separating steps between paths
+
+name: matches any child element with name `name`
+
+*: matches any child element
+
+@name: matches any attribute with `name`
+
+@*: matches any attribute
+
+//: matches any descendent element or the current element
+
+.: matches the current element
+
+..: Matches the parent element
+
+Ex: /bibliography/books will get all the books. /bibliography/* will get all articles used 
+in the book. 
+
+`[condition]`: matches the current element if condition evaluates to true on the current element.
+
+Ex: /bibliography/book[author='a'] will get books where one of the authors was 'a'
+
+You can use predicates `and`, `or`, and `not`
+
+Remember, you are searching for the documents where one of the elements matches the condition,
+not all of them.
+
+If a book had multiple prices, checking for a price within a certain ranges requires 
+/bibliography/book[price[. >= x and . <= y]]
+
+### Operators
+
+`contains(x, y)`: true if string x contains y.
+
+`count(x)`: returns how many nodes are in x.
+
+`position()`: returns the position of the current node being looked at.
+
+The positions are one based.
+
+`last()`: returns the position of the last element in the node set
+
+`name()`: returns the name tag of the current node
+
+## JSON
+
+Has arrays and objects, which are key value pairs with the keys being strings.
+
+Simple types: numbers, strings, true, false, null
+
+Thing: simple value/array/object
+
+## MongoDB
+
+Database = a number of “collections”
+• Collection = a list of “documents”
+• Document = a JSON object
+• Must have an _id attribute whose value can uniquely identify a document
+within the collection
+
+Queries must be of the form db.collection.other-operations
+
+### Operations
+
+find({values to filter by}, {values to project}).
+
+Remember, find cannot be used in an aggregation pipeline. Also, you must have {_id: 0} if you 
+want to get rid of _id.
+
+If passing nothing to find, returns all values.
+
+Regex can be used as {field: /expression/}.
+
+sort: takes key-val pairs of attribute to sort by and whether it should be in ascending order (1) or
+descending order (-1)
+
+Greater than = gt, less than = lt, 
+
+and: takes a vector where each element is another predicate to satisfy.
+
+Ex: get books with price in between 70 and 100 dollars.
+db.bib.find({$and: [{price: {$lt: 100}}, {price: {$gt 70}}])
+
+Note: if you try to match a field with an object, what will be checked is that the field
+has the exact same structure as the object you passed.
+
+unwind: takes a collection and expands the collection so that if you have 
+{a: 1, b: [1, 2]}, {$unwind: b} will return {a: 1, b: 1}, {a: 1, b: 2}. 
+
+Group:
+{$group: {_id: {all the things you want to group by}, other fields to generate}}
+
+In and nin:
+{x: {$in: [1, 2, 3]}}. Checks for x values that fall within 1, 2, 3.
+
+elemMatch:
+{arr: {$elemMatch: {key-val pairs of conditions which must be satisfied}
+
+Ex:
+db.restaurants.find({grades: {$elemMatch: {date: ISODate("2014-08-11T00:00:00Z"), grade: "A", score: 11}}}, {restaurant_id : 1,name: 1, grades: 1, _id: 0})

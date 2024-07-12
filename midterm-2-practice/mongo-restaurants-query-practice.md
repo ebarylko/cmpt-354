@@ -95,4 +95,64 @@ db.restaurants.aggregate([{
 {$sort: {name: 1}}
 ]).toArray()
 52.Write a MongoDB query to find the highest score for each restaurant. 
-db.restaurants
+db.restaurants.aggregate([
+{$project: {score:{ $max: "$grades.score"}, name: 1, _id: 0}},
+{$sort: {name: 1}}
+])
+
+db.restaurants.aggregate([{
+    $unwind: "$grades"
+  },
+  {
+    $group: {
+      _id: "$name",
+      highest_score: {
+        $max: "$grades.score"
+      }
+    }},
+{$sort: {name: 1}}
+])
+
+56.Write a MongoDB query to find the count of restaurants for each cuisine and borough. 
+db.restaurants.aggregate([
+    {$group: {_id: {cuisine: "$cuisine", borough: "$borough"}, num: {$sum: 1}}}
+])
+
+59.Write a MongoDB query to find the count of restaurants that received a grade of 'A' for each cuisine and borough.
+db.restaurants.aggregate([
+{$match: {"grades.grade": "A"}},
+{$group: {_id: {cuisine: "$cuisine", borough: "$borough"}, num: {$sum: 1}}},
+{$sort: {num: -1}}
+]).toArray()
+
+
+60.Write a  MongoDB query to find the number of restaurants that have been graded in each month of the year. 
+db.restaurants.aggregate([
+{$unwind: "$grades"},
+{$group: {_id: {month:  {$month: "$grades.date"}, year: {$year: "$grades.date"}}, num: {$sum: 1}}},
+{$sort: {"_id.month": -1, "_id.year": -1}}
+]).toArray()
+
+db.restaurants.aggregate([
+{$unwind: "$grades"},
+{$group: {_id: {name: "$name", month:  {$month: "$grades.date"}, year: {$year: "$grades.date"}}}},
+{$group: {_id: {year: "$_id.year", month: "$_id.month"}, num: {$sum: 1}}},
+{$sort: {"_id.month": -1, "_id.year": -1}}
+]).toArray()
+
+70.Write a  MongoDB query to find the name and address of the restaurants that have at least one 'A' grade and no 'B' grades. 
+db.restaurants.aggregate([
+{$match: {"grades.grade": {$nin: ["B"]}}},
+{$match: {"grades.grade": "A"}},
+{$project: {name: 1, address: 1, _id: 0}}
+]).toArray()
+
+73.Write a MongoDB query to find the name and address of the restaurants that have the word 'coffee' in their name.
+db.restaurants.find({name: /^coffee/}, {name: 1, address: 1, _id: 0})
+db.restaurants.aggregate([
+{$match: {$regex: {name: /coffee/}}}
+])
+db.restaurants.find({name: {$regex: /coffee/i}})
+db.restaurants.aggregate([
+{name: {$regex: /coffee/}}
+])
