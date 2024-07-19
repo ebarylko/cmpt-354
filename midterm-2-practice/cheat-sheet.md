@@ -35,8 +35,6 @@ FOR EACH STATEMENT
 action
 
 
-
-
 INSERT: can only use the new row or table
 
 DELETE: can only use old row or table
